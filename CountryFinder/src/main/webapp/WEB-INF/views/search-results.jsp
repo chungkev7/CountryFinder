@@ -12,7 +12,7 @@
 
 ${none}
 
-<table>
+<table class="table">
   <tr>
     <th>Name</th>
     <th>Capital</th>
