@@ -29,6 +29,7 @@ ${none}
 		</c:forEach>
 	</table>
 
+<a class="btn btn-primary" href="/main-page">Main Page</a>
 
 </body>
 </html>

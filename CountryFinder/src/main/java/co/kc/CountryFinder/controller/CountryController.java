@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClientException;
@@ -84,7 +85,8 @@ public class CountryController {
 			countryList.add(c);
 		}
 		
-		randomCountry = countryList.get( (int)Math.random() * (countryList.size() - 1));
+		int countryNum = (int) (Math.random() * countryList.size());
+		randomCountry = countryList.get(countryNum);
 		
 		mv.addObject("randomCountry", randomCountry);
 		
@@ -93,13 +95,24 @@ public class CountryController {
 	
 	@RequestMapping("/pop-guess")
 	public ModelAndView populationGuess(@RequestParam("population") int population) {
-		ModelAndView mv = new ModelAndView("index");
+		ModelAndView mv = new ModelAndView("guess-result");
 		
 		if (population != randomCountry.getPopulation()) {
-			System.out.println("Sorry, your guess is incorrect. You are off by " + ((int)Math.abs(population - randomCountry.getPopulation())) + " citizens.");
+			mv.addObject("result", "Sorry, your guess is incorrect. You are off by " + ((int)Math.abs(population - randomCountry.getPopulation())) + " citizens.");
 		} else {
-			System.out.println("You are correct!");
+			mv.addObject("result", "You are correct!");
 		}
+		
+		countryList.clear();
+		
+		return mv;
+	}
+	
+	@RequestMapping("/main-page")
+	public ModelAndView homePage() {
+		ModelAndView mv = new ModelAndView("index");
+		
+		countryList.clear();
 		
 		return mv;
 	}
