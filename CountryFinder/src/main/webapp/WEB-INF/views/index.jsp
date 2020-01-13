@@ -15,7 +15,7 @@
 		<input class="btn btn-primary" type="submit" value="Submit">
 	</form>
 
-	<h1>Search by region</h1>
+	<h1>Search countries by region</h1>
 	<form action="/region-search">
 		<select name="region" required>
 			<option value="Africa">Africa</option>
@@ -28,7 +28,7 @@
 	</form>
 
 	<h1>Guess population: Search by region</h1>
-		<form action="/random-country">
+	<form action="/random-country-population">
 		<select name="region" required>
 			<option value="Africa">Africa</option>
 			<option value="Americas">Americas</option>
@@ -39,5 +39,16 @@
 		<input class="btn btn-primary" type="submit" value="Submit">
 	</form>
 	
+	<h1>Guess capital: Search by region</h1>
+	<form action="/random-country-capital">
+		<select name="region" required>
+			<option value="Africa">Africa</option>
+			<option value="Americas">Americas</option>
+			<option value="Asia">Asia</option>
+			<option value="Europe">Europe</option>
+			<option value="Oceania">Oceania</option>
+			</select>
+		<input class="btn btn-primary" type="submit" value="Submit">
+	</form>
 </body>
 </html>

@@ -1,7 +1,6 @@
 package co.kc.CountryFinder.controller;
 
 import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -9,7 +8,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClientException;
@@ -24,8 +22,8 @@ public class CountryController {
 	@Value("${country.key}")
 	private String countryKey;
 	
-	private static ArrayList<Country> countryList = new ArrayList<>();
-	private static Country randomCountry;
+	static ArrayList<Country> countryList = new ArrayList<>();
+	static Country randomCountry;
 	
 	RestTemplate rt = new RestTemplate();
 	
@@ -69,7 +67,7 @@ public class CountryController {
 	}
 	
 	
-	@RequestMapping("/random-country")
+	@RequestMapping("/random-country-population")
 	public ModelAndView getRandomCountryByRegion(@RequestParam("region") String region) {
 		ModelAndView mv = new ModelAndView("pop-guess");
 		
@@ -89,7 +87,7 @@ public class CountryController {
 		randomCountry = countryList.get(countryNum);
 		
 		mv.addObject("randomCountry", randomCountry);
-		
+
 		return mv;
 	}
 	
@@ -98,12 +96,50 @@ public class CountryController {
 		ModelAndView mv = new ModelAndView("guess-result");
 		
 		if (population != randomCountry.getPopulation()) {
-			mv.addObject("result", "Sorry, your guess is incorrect. You are off by " + ((int)Math.abs(population - randomCountry.getPopulation())) + " citizens.");
+			mv.addObject("result", "Sorry, your guess is incorrect. The population of " + randomCountry.getName() + " is " + randomCountry.getPopulation() + ". You are off by " + ((int)Math.abs(population - randomCountry.getPopulation())) + " citizens.");
 		} else {
-			mv.addObject("result", "You are correct!");
+			mv.addObject("result", "You are correct! The population of " + randomCountry.getName() + " is " + randomCountry.getPopulation() + " citizens.");
 		}
 		
 		countryList.clear();
+		
+		return mv;
+	}
+	
+	@RequestMapping("/random-country-capital")
+	public ModelAndView getRandomCountryCapital(@RequestParam("region") String region) {
+		ModelAndView mv = new ModelAndView("capital-guess");
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-RapidAPI-Key", countryKey);
+		headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+		HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+		
+		ResponseEntity<Country[]> response = rt.exchange("https://restcountries-v1.p.rapidapi.com/region/" + region, HttpMethod.GET, entity, Country[].class);
+					
+		for (Country c : response.getBody()) {
+			countryList.add(c);
+		}
+		
+		int countryNum = (int) (Math.random() * countryList.size());
+		randomCountry = countryList.get(countryNum);
+		
+		mv.addObject("randomCountry", randomCountry);
+		
+		return mv;
+		
+	}
+	
+	@RequestMapping("/capital-guess")
+	public ModelAndView capitalGuess(@RequestParam("capital") String capital) {
+		ModelAndView mv = new ModelAndView("guess-result");
+		
+		if(!capital.equalsIgnoreCase(randomCountry.getCapital())) {
+			mv.addObject("result", "Sorry, your guess is incorrect. The capital of " + randomCountry.getName() + " is " + randomCountry.getCapital() + ".");
+		} else {
+			mv.addObject("result", "You are correct! The capital of " + randomCountry.getName() + " is " + randomCountry.getCapital() + ".");
+		}
 		
 		return mv;
 	}
