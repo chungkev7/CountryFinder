@@ -50,5 +50,29 @@
 			</select>
 		<input class="btn btn-primary" type="submit" value="Submit">
 	</form>
+	
+	<br>
+	<h1><a class="btn btn-secondary" onclick="confirmPopChoice()">Guess population, search by all countries</a></h1>
+	
+	<br>
+	<h1><a class="btn btn-secondary" onclick="confirmCapChoice()">Guess capital, search by all countries</a></h1>
+	
+<script>
+function confirmPopChoice() {
+	  var r = confirm("Are you sure?");
+	  
+	  if (r == true) {
+		  window.location = "/all-country-population";
+	  }
+	}
+	
+function confirmCapChoice() {
+	  var c = confirm("Are you sure?");
+	  
+	  if (c == true) {
+		  window.location = "/all-country-capital";
+	  }
+	}
+</script>
 </body>
 </html>

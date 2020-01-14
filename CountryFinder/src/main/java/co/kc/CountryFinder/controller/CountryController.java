@@ -96,9 +96,9 @@ public class CountryController {
 		ModelAndView mv = new ModelAndView("guess-result");
 		
 		if (population != randomCountry.getPopulation()) {
-			mv.addObject("result", "Sorry, your guess is incorrect. The population of " + randomCountry.getName() + " is " + randomCountry.getPopulation() + ". You are off by " + ((int)Math.abs(population - randomCountry.getPopulation())) + " citizens.");
+			mv.addObject("result", "Sorry, your guess of " + String.format("%,d", population) + " is incorrect. The population of " + randomCountry.getName() + " is " + String.format("%,d", randomCountry.getPopulation()) + ". You are off by " + String.format("%,d", ((int)Math.abs(population - randomCountry.getPopulation()))) + " citizens.");
 		} else {
-			mv.addObject("result", "You are correct! The population of " + randomCountry.getName() + " is " + randomCountry.getPopulation() + " citizens.");
+			mv.addObject("result", "You are correct! The population of " + randomCountry.getName() + " is " + String.format("%,d", randomCountry.getPopulation()) + " citizens.");
 		}
 		
 		countryList.clear();
@@ -141,6 +141,54 @@ public class CountryController {
 			mv.addObject("result", "You are correct! The capital of " + randomCountry.getName() + " is " + randomCountry.getCapital() + ".");
 		}
 		
+		return mv;
+	}
+	
+	@RequestMapping("/all-country-population")
+	public ModelAndView getRandomCountryByAllPopulation() {
+		ModelAndView mv = new ModelAndView("pop-guess");
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-RapidAPI-Key", countryKey);
+		headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+		HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+		
+		ResponseEntity<Country[]> response = rt.exchange("https://restcountries-v1.p.rapidapi.com/all", HttpMethod.GET, entity, Country[].class);
+					
+		for (Country c : response.getBody()) {
+			countryList.add(c);
+		}
+		
+		int countryNum = (int) (Math.random() * countryList.size());
+		randomCountry = countryList.get(countryNum);
+		
+		mv.addObject("randomCountry", randomCountry);
+
+		return mv;
+	}
+	
+	@RequestMapping("/all-country-capital")
+	public ModelAndView getRandomCountryByAllCapital() {
+		ModelAndView mv = new ModelAndView("capital-guess");
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-RapidAPI-Key", countryKey);
+		headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+		HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+		
+		ResponseEntity<Country[]> response = rt.exchange("https://restcountries-v1.p.rapidapi.com/all", HttpMethod.GET, entity, Country[].class);
+					
+		for (Country c : response.getBody()) {
+			countryList.add(c);
+		}
+		
+		int countryNum = (int) (Math.random() * countryList.size());
+		randomCountry = countryList.get(countryNum);
+		
+		mv.addObject("randomCountry", randomCountry);
+
 		return mv;
 	}
 	

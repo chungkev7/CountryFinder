@@ -14,7 +14,7 @@
 	<input type="text" name="capital" required>
 	<input type="submit" value="submit">
 </form>
-
+<br>
 <a class="btn btn-primary" href="/main-page">Main Page</a>
 
 </body>
