@@ -21,8 +21,8 @@ ${none}
   </tr>
 		<c:forEach var="c" items="${results}">
 			<tr>
-				<td>${c.name}</td>
-				<td>${c.capital}</td>
+				<td><a target="_blank" href="https://en.wikipedia.org/wiki/${c.name}">${c.name}</a></td>
+				<td><a target="_blank" href="https://en.wikipedia.org/wiki/${c.capital}, ${c.name}">${c.capital}</a></td>
 				<td>${c.region}</td>
 				<td>${c.population}</td>
 			</tr>
