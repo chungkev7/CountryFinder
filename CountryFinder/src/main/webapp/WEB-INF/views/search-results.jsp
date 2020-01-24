@@ -14,15 +14,15 @@ ${none}
 
 <table class="table">
   <tr>
-    <th>Name</th>
-    <th>Capital</th>
+    <th><a href="/sort-by-name">Name</a></th>
+    <th><a href="/sort-by-capital">Capital</a></th>
     <th>Region</th>
-    <th>Population</th>
+    <th><a href="/sort-by-population">Population</a></th>
   </tr>
 		<c:forEach var="c" items="${results}">
 			<tr>
 				<td><a target="_blank" href="https://en.wikipedia.org/wiki/${c.name}">${c.name}</a></td>
-				<td><a target="_blank" href="https://en.wikipedia.org/wiki/${c.capital}, ${c.name}">${c.capital}</a></td>
+				<td><a target="_blank" href="https://en.wikipedia.org/wiki/${c.capital}">${c.capital}</a></td>
 				<td>${c.region}</td>
 				<td>${c.population}</td>
 			</tr>

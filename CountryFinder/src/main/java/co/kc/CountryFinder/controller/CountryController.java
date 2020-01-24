@@ -1,6 +1,8 @@
 package co.kc.CountryFinder.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
-
 import co.kc.CountryFinder.model.Country;
 
 @Controller
@@ -39,9 +40,11 @@ public class CountryController {
 		
 		try {
 			ResponseEntity<Country[]> response = rt.exchange("https://restcountries-v1.p.rapidapi.com/name/" + name, HttpMethod.GET, entity, Country[].class);
-						
-			mv.addObject("results", response.getBody());
 			
+			addtoCountryList(response);
+			
+			mv.addObject("results", countryList);
+
 		} catch (RestClientException e) {
 			mv.addObject("none", "No search results found.");
 		}
@@ -61,7 +64,9 @@ public class CountryController {
 		
 		ResponseEntity<Country[]> response = rt.exchange("https://restcountries-v1.p.rapidapi.com/region/" + region, HttpMethod.GET, entity, Country[].class);
 		
-		mv.addObject("results", response.getBody());
+		addtoCountryList(response);
+		
+		mv.addObject("results", countryList);
 		
 		return mv;
 	}
@@ -79,9 +84,7 @@ public class CountryController {
 		
 		ResponseEntity<Country[]> response = rt.exchange("https://restcountries-v1.p.rapidapi.com/region/" + region, HttpMethod.GET, entity, Country[].class);
 					
-		for (Country c : response.getBody()) {
-			countryList.add(c);
-		}
+		addtoCountryList(response);
 		
 		int countryNum = (int) (Math.random() * countryList.size());
 		randomCountry = countryList.get(countryNum);
@@ -117,10 +120,8 @@ public class CountryController {
 		HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 		
 		ResponseEntity<Country[]> response = rt.exchange("https://restcountries-v1.p.rapidapi.com/region/" + region, HttpMethod.GET, entity, Country[].class);
-					
-		for (Country c : response.getBody()) {
-			countryList.add(c);
-		}
+
+		addtoCountryList(response);
 		
 		int countryNum = (int) (Math.random() * countryList.size());
 		randomCountry = countryList.get(countryNum);
@@ -156,9 +157,7 @@ public class CountryController {
 		
 		ResponseEntity<Country[]> response = rt.exchange("https://restcountries-v1.p.rapidapi.com/all", HttpMethod.GET, entity, Country[].class);
 					
-		for (Country c : response.getBody()) {
-			countryList.add(c);
-		}
+		addtoCountryList(response);
 		
 		int countryNum = (int) (Math.random() * countryList.size());
 		randomCountry = countryList.get(countryNum);
@@ -180,15 +179,52 @@ public class CountryController {
 		
 		ResponseEntity<Country[]> response = rt.exchange("https://restcountries-v1.p.rapidapi.com/all", HttpMethod.GET, entity, Country[].class);
 					
-		for (Country c : response.getBody()) {
-			countryList.add(c);
-		}
+		addtoCountryList(response);
 		
 		int countryNum = (int) (Math.random() * countryList.size());
 		randomCountry = countryList.get(countryNum);
 		
 		mv.addObject("randomCountry", randomCountry);
 
+		return mv;
+	}
+	
+	@RequestMapping("/sort-by-name")
+	public ModelAndView sortByName() {
+		ModelAndView mv = new ModelAndView("search-results");
+		
+		Comparator<Country> sortByName = (Country c1, Country c2) -> c1.getName().compareTo(c2.getName());
+		
+		Collections.sort(countryList, sortByName);
+		
+		mv.addObject("results", countryList);
+		
+		return mv; 
+	}
+	
+	@RequestMapping("/sort-by-capital")
+	public ModelAndView sortByCapital() {
+		ModelAndView mv = new ModelAndView("search-results");
+		
+		Comparator<Country> sortByCapital = (Country c1, Country c2) -> c1.getCapital().compareTo(c2.getCapital());
+		
+		Collections.sort(countryList, sortByCapital);
+		
+		mv.addObject("results", countryList);
+				
+		return mv;
+	}
+	
+	@RequestMapping("/sort-by-population")
+	public ModelAndView sortByPopulation() {
+		ModelAndView mv = new ModelAndView("search-results");
+		
+		Comparator<Country> sortByPopulation = (Country c1, Country c2) -> Integer.compare(c1.getPopulation(), c2.getPopulation());
+		
+		Collections.sort(countryList, sortByPopulation);
+		
+		mv.addObject("results", countryList);
+		
 		return mv;
 	}
 	
@@ -199,5 +235,11 @@ public class CountryController {
 		countryList.clear();
 		
 		return mv;
+	}
+	
+	public static void addtoCountryList(ResponseEntity<Country[]> response) {
+		for (Country c : response.getBody()) {
+			countryList.add(c);
+		}
 	}
 }
