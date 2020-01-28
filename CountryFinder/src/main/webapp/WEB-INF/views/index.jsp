@@ -18,18 +18,7 @@
 	<h1>Search countries by region</h1>
 	<form action="/region-search">
 		<select name="region" required>
-			<option value="Africa">Africa</option>
-			<option value="Americas">Americas</option>
-			<option value="Asia">Asia</option>
-			<option value="Europe">Europe</option>
-			<option value="Oceania">Oceania</option>
-		</select>
-		<input class="btn btn-primary" type="submit" value="Submit">
-	</form>
-
-	<h1>Guess population: Search by region</h1>
-	<form action="/random-country-population">
-		<select name="region" required>
+			<option value="">Region:</option>
 			<option value="Africa">Africa</option>
 			<option value="Americas">Americas</option>
 			<option value="Asia">Asia</option>
@@ -39,9 +28,34 @@
 		<input class="btn btn-primary" type="submit" value="Submit">
 	</form>
 	
+	<!-- The selected region value is passed to the hidden value to form action/random-country-population -->
+	<h1>Guess population: Search by region</h1>
+	<form>
+		<select name="region" id="region" required>
+			<option value="">Region:</option>
+			<option value="Africa">Africa</option>
+			<option value="Americas">Americas</option>
+			<option value="Asia">Asia</option>
+			<option value="Europe">Europe</option>
+			<option value="Oceania">Oceania</option>
+		</select>
+		<input class="btn btn-primary" onclick="getRegionChoice()" type="button" value="Select region">
+	</form>
+	
+	<!-- Added onsubmit function for region choice validation -->
+	<form action="/random-country-population" onsubmit="return isRegionChoiceEmpty()">
+		<input type="hidden" id="selectedRegion" name="region" value="">
+		<select name="choice" required>
+			<option value="Single input">Single input choice</option>
+			<option value="Multiple choice">Multiple choice</option>
+		</select>
+		<input class="btn btn-primary" type="submit" value="Submit">
+	</form>
+	
 	<h1>Guess capital: Search by region</h1>
 	<form action="/random-country-capital">
 		<select name="region" required>
+			<option value="">Region:</option>
 			<option value="Africa">Africa</option>
 			<option value="Americas">Americas</option>
 			<option value="Asia">Asia</option>
@@ -58,13 +72,34 @@
 	<h1><a class="btn btn-secondary" onclick="confirmCapChoice()">Guess capital, search by all countries</a></h1>
 	
 <script>
+
+var regionChoice;
+var selectedRegion;
+
+function getRegionChoice(){
+	regionChoice = document.getElementById("region").value;
+	
+	document.getElementById("selectedRegion").value = regionChoice;
+
+	selectedRegion = regionChoice;
+}
+	
+function isRegionChoiceEmpty() {
+	// !selection is equivalent to checking if the variable is empty
+	if (!selectedRegion){
+		alert("You must select a region");
+		return false;
+	}
+	return true;
+}
+
 function confirmPopChoice() {
 	  var r = confirm("Are you sure?");
 	  
 	  if (r == true) {
 		  window.location = "/all-country-population";
 	  }
-	}
+}
 	
 function confirmCapChoice() {
 	  var c = confirm("Are you sure?");
@@ -72,7 +107,8 @@ function confirmCapChoice() {
 	  if (c == true) {
 		  window.location = "/all-country-capital";
 	  }
-	}
+}
+
 </script>
 </body>
 </html>

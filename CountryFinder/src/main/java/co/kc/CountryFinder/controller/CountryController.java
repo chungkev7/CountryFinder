@@ -26,6 +26,7 @@ public class CountryController {
 	RestTemplate rt = new RestTemplate();
 	
 	static ArrayList<Country> countryList = new ArrayList<>();
+	static ArrayList<Country> randomCountries = new ArrayList<>();
 	static Country randomCountry;
 	static int nameClickCounter = 0;
 	static int capitalClickCounter = 0;
@@ -89,13 +90,15 @@ public class CountryController {
 	/**
 	 * Generates a random country from a particular region for user to guess the population
 	 * 
-	 * @param region: dropdown list of countries
+	 * @param region: a selected region from the dropdown list of countries
+	 * @param choice: indicates if user wants to guess by an input or by multiple choice
 	 * @return: a random country's population
 	 */
 	@RequestMapping("/random-country-population")
-	public ModelAndView getRandomCountryByRegion(@RequestParam("region") String region) {
-		ModelAndView mv = new ModelAndView("pop-guess");
-		
+	public ModelAndView getRandomCountryByRegion(@RequestParam("region") String region, @RequestParam("choice") String choice) {
+		// Initialize view, then set view if choice was single input/multiple choice
+		ModelAndView mv = new ModelAndView();
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("X-RapidAPI-Key", countryKey);
 		headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
@@ -109,8 +112,41 @@ public class CountryController {
 		int countryNum = (int) (Math.random() * countryList.size());
 		randomCountry = countryList.get(countryNum);
 		
-		mv.addObject("randomCountry", randomCountry);
-
+		Country randomCountry2 = new Country();
+		Country randomCountry3 = new Country();
+		Country randomCountry4 = new Country();
+		
+		try {
+			randomCountry2 = countryList.get(countryNum + 1);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			randomCountry2 = countryList.get(countryNum - 1);
+		}
+		
+		try {
+			randomCountry3 = countryList.get(countryNum + 2);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			randomCountry3 = countryList.get(countryNum - 2);
+		}
+		
+		try {
+			randomCountry4 = countryList.get(countryNum + 3);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			randomCountry4 = countryList.get(countryNum - 3);
+		}
+		
+		randomCountries.add(randomCountry);
+		randomCountries.add(randomCountry2);
+		randomCountries.add(randomCountry3);
+		randomCountries.add(randomCountry4);
+		
+		if (choice.equals("Single input")) {
+			mv.setViewName("pop-guess");
+			mv.addObject("randomCountry", randomCountry);
+		} else {
+			mv.setViewName("pop-guess-mc");
+			mv.addObject("randomCountries", randomCountries);
+		}
+		
 		return mv;
 	}
 	
@@ -328,6 +364,7 @@ public class CountryController {
 		ModelAndView mv = new ModelAndView("index");
 		
 		countryList.clear();
+		randomCountries.clear();
 		
 		return mv;
 	}
