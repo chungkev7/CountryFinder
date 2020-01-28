@@ -31,7 +31,7 @@
 	<!-- The selected region value is passed to the hidden value to form action/random-country-population -->
 	<h1>Guess population: Search by region</h1>
 	<form>
-		<select name="region" id="region" required>
+		<select name="region" id="regionPop" required>
 			<option value="">Region:</option>
 			<option value="Africa">Africa</option>
 			<option value="Americas">Americas</option>
@@ -39,12 +39,12 @@
 			<option value="Europe">Europe</option>
 			<option value="Oceania">Oceania</option>
 		</select>
-		<input class="btn btn-primary" onclick="getRegionChoice()" type="button" value="Select region">
+		<input class="btn btn-primary" onclick="getRegionChoicePop()" type="button" value="Select region">
 	</form>
 	
 	<!-- Added onsubmit function for region choice validation -->
-	<form action="/random-country-population" onsubmit="return isRegionChoiceEmpty()">
-		<input type="hidden" id="selectedRegion" name="region" value="">
+	<form action="/random-country-population" onsubmit="return isRegionChoiceEmptyPop()">
+		<input type="hidden" id="selectedRegionPop" name="region" value="">
 		<select name="choice" required>
 			<option value="Single input">Single input choice</option>
 			<option value="Multiple choice">Multiple choice</option>
@@ -52,9 +52,10 @@
 		<input class="btn btn-primary" type="submit" value="Submit">
 	</form>
 	
+	<!-- The selected region value is passed to the hidden value to form action/random-country-capital -->
 	<h1>Guess capital: Search by region</h1>
-	<form action="/random-country-capital">
-		<select name="region" required>
+	<form>
+		<select name="region" id="regionCap" required>
 			<option value="">Region:</option>
 			<option value="Africa">Africa</option>
 			<option value="Americas">Americas</option>
@@ -62,6 +63,16 @@
 			<option value="Europe">Europe</option>
 			<option value="Oceania">Oceania</option>
 			</select>
+		<input class="btn btn-primary" onclick="getRegionChoiceCap()" type="button" value="Select region">
+	</form>
+	
+	<!-- Added onsubmit function for region choice validation -->
+	<form action="/random-country-capital" onsubmit="return isRegionChoiceEmptyCap()">
+		<input type="hidden" id="selectedRegionCap" name="region" value="">
+		<select name="choice" required>
+			<option value="Single input">Single input choice</option>
+			<option value="Multiple choice">Multiple choice</option>
+		</select>
 		<input class="btn btn-primary" type="submit" value="Submit">
 	</form>
 	
@@ -73,21 +84,41 @@
 	
 <script>
 
-var regionChoice;
-var selectedRegion;
+var regionChoicePop;
+var selectedRegionPop;
 
-function getRegionChoice(){
-	regionChoice = document.getElementById("region").value;
+function getRegionChoicePop(){
+	regionChoicePop = document.getElementById("regionPop").value;
 	
-	document.getElementById("selectedRegion").value = regionChoice;
+	document.getElementById("selectedRegionPop").value = regionChoicePop;
 
-	selectedRegion = regionChoice;
+	selectedRegionPop = regionChoicePop;
 }
 	
-function isRegionChoiceEmpty() {
+function isRegionChoiceEmptyPop() {
 	// !selection is equivalent to checking if the variable is empty
-	if (!selectedRegion){
-		alert("You must select a region");
+	if (!selectedRegionPop){
+		alert("You must select a region if you want to guess the population");
+		return false;
+	}
+	return true;
+}
+
+var regionChoiceCap;
+var selectedRegionCap;
+
+function getRegionChoiceCap(){
+	regionChoiceCap = document.getElementById("regionCap").value;
+	
+	document.getElementById("selectedRegionCap").value = regionChoiceCap;
+
+	selectedRegionCap = regionChoiceCap;
+}
+	
+function isRegionChoiceEmptyCap() {
+	// !selection is equivalent to checking if the variable is empty
+	if (!selectedRegionCap){
+		alert("You must select a region if you want to guess the capital");
 		return false;
 	}
 	return true;

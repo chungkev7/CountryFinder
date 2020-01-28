@@ -92,7 +92,7 @@ public class CountryController {
 	 * 
 	 * @param region: a selected region from the dropdown list of countries
 	 * @param choice: indicates if user wants to guess by an input or by multiple choice
-	 * @return: a random country's population
+	 * @return: a list of four countries
 	 */
 	@RequestMapping("/random-country-population")
 	public ModelAndView getRandomCountryByRegion(@RequestParam("region") String region, @RequestParam("choice") String choice) {
@@ -118,19 +118,19 @@ public class CountryController {
 		
 		try {
 			randomCountry2 = countryList.get(countryNum + 1);
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (IndexOutOfBoundsException e) {
 			randomCountry2 = countryList.get(countryNum - 1);
 		}
 		
 		try {
 			randomCountry3 = countryList.get(countryNum + 2);
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (IndexOutOfBoundsException e) {
 			randomCountry3 = countryList.get(countryNum - 2);
 		}
 		
 		try {
 			randomCountry4 = countryList.get(countryNum + 3);
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (IndexOutOfBoundsException e) {
 			randomCountry4 = countryList.get(countryNum - 3);
 		}
 		
@@ -174,13 +174,15 @@ public class CountryController {
 	/**
 	 * Generates a random country from a particular region for user to guess the capital
 	 * 
-	 * @param region: dropdown list of countries
-	 * @return: a random country's capital
+	 * @param region: a selected region from the dropdown list of countries
+	 * @param choice: indicates if user wants to guess by an input or by multiple choice
+	 * @return: a list of four countries
 	 */
 	@RequestMapping("/random-country-capital")
-	public ModelAndView getRandomCountryCapital(@RequestParam("region") String region) {
-		ModelAndView mv = new ModelAndView("capital-guess");
-		
+	public ModelAndView getRandomCountryByCapital(@RequestParam("region") String region, @RequestParam("choice") String choice) {
+		// Initialize view, then set view if choice was single input/multiple choice
+		ModelAndView mv = new ModelAndView();
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("X-RapidAPI-Key", countryKey);
 		headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
@@ -188,22 +190,54 @@ public class CountryController {
 		HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 		
 		ResponseEntity<Country[]> response = rt.exchange("https://restcountries-v1.p.rapidapi.com/region/" + region, HttpMethod.GET, entity, Country[].class);
-
+					
 		addtoCountryList(response);
 		
 		int countryNum = (int) (Math.random() * countryList.size());
 		randomCountry = countryList.get(countryNum);
 		
-		mv.addObject("randomCountry", randomCountry);
+		Country randomCountry2 = new Country();
+		Country randomCountry3 = new Country();
+		Country randomCountry4 = new Country();
+		
+		try {
+			randomCountry2 = countryList.get(countryNum + 1);
+		} catch (IndexOutOfBoundsException e) {
+			randomCountry2 = countryList.get(countryNum - 1);
+		}
+		
+		try {
+			randomCountry3 = countryList.get(countryNum + 2);
+		} catch (IndexOutOfBoundsException e) {
+			randomCountry3 = countryList.get(countryNum - 2);
+		}
+		
+		try {
+			randomCountry4 = countryList.get(countryNum + 3);
+		} catch (IndexOutOfBoundsException e) {
+			randomCountry4 = countryList.get(countryNum - 3);
+		}
+		
+		randomCountries.add(randomCountry);
+		randomCountries.add(randomCountry2);
+		randomCountries.add(randomCountry3);
+		randomCountries.add(randomCountry4);
+		
+		if (choice.equals("Single input")) {
+			mv.setViewName("capital-guess");
+			mv.addObject("randomCountry", randomCountry);
+		} else {
+			mv.setViewName("capital-guess-mc");
+			mv.addObject("randomCountries", randomCountries);
+		}
 		
 		return mv;
-		
 	}
 	
 	/**
 	 * Generates a message to user if user guesses the capital correctly or incorrectly
 	 * 
-	 * @param population: compares the user's capital guess to the random country
+	 * @param capital: compares the user's capital guess to the random country
 	 * @return: message if user was correct or not
 	 */
 	@RequestMapping("/capital-guess")
@@ -222,7 +256,7 @@ public class CountryController {
 	/**
 	 * Generates a random country from all regions for user to guess the population
 	 * 
-	 * @param region: user indication (yes or not to continue)
+	 * user indication (yes or not to continue)
 	 * @return: a random country's population
 	 */
 	@RequestMapping("/all-country-population")
@@ -250,7 +284,7 @@ public class CountryController {
 	/**
 	 * Generates a random country from all regions for user to guess the capital
 	 * 
-	 * @param region: user indication (yes or not to continue)
+	 * user indication (yes or not to continue)
 	 * @return: a random country's capital
 	 */
 	@RequestMapping("/all-country-capital")
@@ -355,7 +389,7 @@ public class CountryController {
 	}
 	
 	/**
-	 * Clears the country list if user goes back to the main page
+	 * Clears the country list and random countries list if user goes back to the main page
 	 * 
 	 * @return: an empty countryList 
 	 */
