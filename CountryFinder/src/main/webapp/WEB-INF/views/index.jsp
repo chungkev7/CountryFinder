@@ -31,7 +31,7 @@
 	<!-- The selected region value is passed to the hidden value to form action/random-country-population -->
 	<h1>Guess population: Search by region</h1>
 	<form>
-		<select name="region" id="regionPop" required>
+		<select name="region" id="regionPop" onclick="getRegionChoicePop()" required>
 			<option value="">Region:</option>
 			<option value="Africa">Africa</option>
 			<option value="Americas">Americas</option>
@@ -39,7 +39,6 @@
 			<option value="Europe">Europe</option>
 			<option value="Oceania">Oceania</option>
 		</select>
-		<input class="btn btn-primary" onclick="getRegionChoicePop()" type="button" value="Select region">
 	</form>
 	
 	<!-- Added onsubmit function for region choice validation -->
@@ -55,7 +54,7 @@
 	<!-- The selected region value is passed to the hidden value to form action/random-country-capital -->
 	<h1>Guess capital: Search by region</h1>
 	<form>
-		<select name="region" id="regionCap" required>
+		<select name="region" id="regionCap" onclick="getRegionChoiceCap()" required>
 			<option value="">Region:</option>
 			<option value="Africa">Africa</option>
 			<option value="Americas">Americas</option>
@@ -63,7 +62,6 @@
 			<option value="Europe">Europe</option>
 			<option value="Oceania">Oceania</option>
 			</select>
-		<input class="btn btn-primary" onclick="getRegionChoiceCap()" type="button" value="Select region">
 	</form>
 	
 	<!-- Added onsubmit function for region choice validation -->
@@ -89,7 +87,7 @@ var selectedRegionPop;
 
 function getRegionChoicePop(){
 	regionChoicePop = document.getElementById("regionPop").value;
-	
+
 	document.getElementById("selectedRegionPop").value = regionChoicePop;
 
 	selectedRegionPop = regionChoicePop;

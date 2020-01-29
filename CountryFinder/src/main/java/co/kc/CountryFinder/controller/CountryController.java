@@ -1,3 +1,7 @@
+/**
+ * @author Kevin Chung
+ */
+
 package co.kc.CountryFinder.controller;
 
 import java.util.ArrayList;
