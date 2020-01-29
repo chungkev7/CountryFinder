@@ -116,34 +116,38 @@ public class CountryController {
 		Country randomCountry3 = new Country();
 		Country randomCountry4 = new Country();
 		
-		try {
-			randomCountry2 = countryList.get(countryNum + 1);
-		} catch (IndexOutOfBoundsException e) {
-			randomCountry2 = countryList.get(countryNum - 1);
-		}
-		
-		try {
-			randomCountry3 = countryList.get(countryNum + 2);
-		} catch (IndexOutOfBoundsException e) {
-			randomCountry3 = countryList.get(countryNum - 2);
-		}
-		
-		try {
-			randomCountry4 = countryList.get(countryNum + 3);
-		} catch (IndexOutOfBoundsException e) {
-			randomCountry4 = countryList.get(countryNum - 3);
-		}
-		
-		randomCountries.add(randomCountry);
-		randomCountries.add(randomCountry2);
-		randomCountries.add(randomCountry3);
-		randomCountries.add(randomCountry4);
-		
 		if (choice.equals("Single input")) {
 			mv.setViewName("pop-guess");
 			mv.addObject("randomCountry", randomCountry);
 		} else {
 			mv.setViewName("pop-guess-mc");
+			
+			try {
+				randomCountry2 = countryList.get(countryNum + 1);
+			} catch (IndexOutOfBoundsException e) {
+				randomCountry2 = countryList.get(countryNum - 1);
+			}
+			
+			try {
+				randomCountry3 = countryList.get(countryNum + 2);
+			} catch (IndexOutOfBoundsException e) {
+				randomCountry3 = countryList.get(countryNum - 2);
+			}
+			
+			try {
+				randomCountry4 = countryList.get(countryNum + 3);
+			} catch (IndexOutOfBoundsException e) {
+				randomCountry4 = countryList.get(countryNum - 3);
+			}
+			
+			randomCountries.add(randomCountry);
+			randomCountries.add(randomCountry2);
+			randomCountries.add(randomCountry3);
+			randomCountries.add(randomCountry4);
+			
+			Collections.shuffle(randomCountries);
+			
+			mv.addObject("randomCountry", randomCountry);
 			mv.addObject("randomCountries", randomCountries);
 		}
 		
@@ -200,34 +204,38 @@ public class CountryController {
 		Country randomCountry3 = new Country();
 		Country randomCountry4 = new Country();
 		
-		try {
-			randomCountry2 = countryList.get(countryNum + 1);
-		} catch (IndexOutOfBoundsException e) {
-			randomCountry2 = countryList.get(countryNum - 1);
-		}
-		
-		try {
-			randomCountry3 = countryList.get(countryNum + 2);
-		} catch (IndexOutOfBoundsException e) {
-			randomCountry3 = countryList.get(countryNum - 2);
-		}
-		
-		try {
-			randomCountry4 = countryList.get(countryNum + 3);
-		} catch (IndexOutOfBoundsException e) {
-			randomCountry4 = countryList.get(countryNum - 3);
-		}
-		
-		randomCountries.add(randomCountry);
-		randomCountries.add(randomCountry2);
-		randomCountries.add(randomCountry3);
-		randomCountries.add(randomCountry4);
-		
 		if (choice.equals("Single input")) {
 			mv.setViewName("capital-guess");
 			mv.addObject("randomCountry", randomCountry);
 		} else {
 			mv.setViewName("capital-guess-mc");
+			
+			try {
+				randomCountry2 = countryList.get(countryNum + 1);
+			} catch (IndexOutOfBoundsException e) {
+				randomCountry2 = countryList.get(countryNum - 1);
+			}
+			
+			try {
+				randomCountry3 = countryList.get(countryNum + 2);
+			} catch (IndexOutOfBoundsException e) {
+				randomCountry3 = countryList.get(countryNum - 2);
+			}
+			
+			try {
+				randomCountry4 = countryList.get(countryNum + 3);
+			} catch (IndexOutOfBoundsException e) {
+				randomCountry4 = countryList.get(countryNum - 3);
+			}
+
+			randomCountries.add(randomCountry);
+			randomCountries.add(randomCountry2);
+			randomCountries.add(randomCountry3);
+			randomCountries.add(randomCountry4);
+			
+			Collections.shuffle(randomCountries);
+			
+			mv.addObject("randomCountry", randomCountry);
 			mv.addObject("randomCountries", randomCountries);
 		}
 		

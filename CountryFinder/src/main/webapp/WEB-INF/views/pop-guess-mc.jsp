@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<h1>What is the population of ${randomCountries.get(0).name}?</h1>
+<h1>What is the population of ${randomCountry.name}?</h1>
 
 	<form action="/pop-guess">
 		<select name="population" required>

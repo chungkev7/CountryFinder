@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<h1>What is the capital of ${randomCountries.get(0).name}?</h1>
+<h1>What is the capital of ${randomCountry.name}?</h1>
 
 	<form action="/capital-guess">
 		<select name="capital" required>
