@@ -23,7 +23,9 @@
 		<input class="btn btn-primary" type="submit" value="Submit">
 	</form>
 
-<a class="btn btn-primary" href="/main-page">Main Page</a>
+<a class="btn btn-primary" href="/start-page">Back to start page</a>
+
+<a class="btn btn-primary" href="/log-out">Log out</a>
 
 </body>
 </html>

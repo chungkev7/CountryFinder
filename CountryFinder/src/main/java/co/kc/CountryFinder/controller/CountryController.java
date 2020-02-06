@@ -401,12 +401,23 @@ public class CountryController {
 	}
 	
 	/**
-	 * Clears the country list and random countries list if user goes back to the main page
-	 * 
-	 * @return: an empty countryList 
+	 * Clears the country list and random countries list if user goes back to the start page
 	 */
-	@RequestMapping("/main-page")
-	public ModelAndView homePage() {
+	@RequestMapping("/start-page")
+	public ModelAndView startPage() {
+		ModelAndView mv = new ModelAndView("start-page");
+		
+		countryList.clear();
+		randomCountries.clear();
+		
+		return mv;
+	}
+	
+	/**
+	 * Clears the country list and random countries list if user logs out and goes back to the initial login page
+	 */
+	@RequestMapping("/log-out")
+	public ModelAndView logOut() {
 		ModelAndView mv = new ModelAndView("index");
 		
 		countryList.clear();
