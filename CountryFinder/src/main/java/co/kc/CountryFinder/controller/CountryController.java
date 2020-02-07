@@ -4,9 +4,12 @@
 
 package co.kc.CountryFinder.controller;
 
+import java.lang.module.FindException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +36,9 @@ public class CountryController {
 	
 	@Autowired
 	UserRepo uRepo;
+	
+	@Autowired
+	HttpSession session;
 	
 	RestTemplate rt = new RestTemplate();
 	
@@ -450,6 +456,8 @@ public class CountryController {
 		currentUser = new User();
 		uRepo.save(currentUser);
 		
+		session.setAttribute("numOfUsers", uRepo.findMaxId());
+		
 		return mv;
 	}
 	
@@ -497,7 +505,7 @@ public class CountryController {
 	// if user did not login as a guest (currentUser's Id is 0)
 	public void saveUser(User user) {
 		if(user.getUserId() > 0) {
-			uRepo.save(user);			
+			uRepo.save(user);	
 		}
 	}
 	

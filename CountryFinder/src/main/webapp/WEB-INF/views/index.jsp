@@ -22,7 +22,14 @@
 
 <p></p>
 
-<a class="btn btn-primary" href="/new-user">New user? Click here to register!</a>
+<a class="btn btn-primary" onclick="newUserId()" href="/new-user">New user? Click here to register!</a>
 
+<script>
+
+function newUserId(){
+	alert("Your user ID is: " + ${numOfUsers + 1} + ". Please remember it.");
+}
+
+</script>
 </body>
 </html>
