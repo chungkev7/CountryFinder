@@ -42,7 +42,7 @@ public class CountryController {
 	static int nameClickCounter = 0;
 	static int capitalClickCounter = 0;
 	static int populationClickCounter = 0;
-	static User currentUser;
+	static User currentUser = new User();
 	
 	/**
 	 * Returns a list of countries based on user input request
@@ -178,8 +178,12 @@ public class CountryController {
 		
 		if (population != randomCountry.getPopulation()) {
 			mv.addObject("result", "Sorry, your guess of " + String.format("%,d", population) + " is incorrect. The population of " + randomCountry.getName() + " is " + String.format("%,d", randomCountry.getPopulation()) + ". You are off by " + String.format("%,d", ((int)Math.abs(population - randomCountry.getPopulation()))) + " citizens.");
+			incorrectGuess(currentUser);
+			saveUser(currentUser);
 		} else {
 			mv.addObject("result", "You are correct! The population of " + randomCountry.getName() + " is " + String.format("%,d", randomCountry.getPopulation()) + " citizens.");
+			correctGuess(currentUser);
+			saveUser(currentUser);
 		}
 		
 		countryList.clear();
@@ -266,8 +270,12 @@ public class CountryController {
 		
 		if(!capital.equalsIgnoreCase(randomCountry.getCapital())) {
 			mv.addObject("result", "Sorry, your guess is incorrect. The capital of " + randomCountry.getName() + " is " + randomCountry.getCapital() + ".");
+			incorrectGuess(currentUser);
+			saveUser(currentUser);
 		} else {
 			mv.addObject("result", "You are correct! The capital of " + randomCountry.getName() + " is " + randomCountry.getCapital() + ".");
+			correctGuess(currentUser);
+			saveUser(currentUser);
 		}
 		
 		return mv;
@@ -468,7 +476,29 @@ public class CountryController {
 		countryList.clear();
 		randomCountries.clear();
 		
+		currentUser = new User();
+		
 		return mv;
+	}
+	
+	// Adds +1 win, games played for each correct guess
+	public static void correctGuess(User user) {
+		user.setWins(user.getWins() + 1);
+		user.setGamesPlayed(user.getGamesPlayed() + 1);
+	}
+	
+	// Adds +1 loss, games played for each incorrect guess
+	public static void incorrectGuess(User user) {
+		user.setLosses(user.getLosses() + 1);
+		user.setGamesPlayed(user.getGamesPlayed() + 1);
+	}
+	
+	// Saves user's wins, losses, and games played to database
+	// if user did not login as a guest (currentUser's Id is 0)
+	public void saveUser(User user) {
+		if(user.getUserId() > 0) {
+			uRepo.save(user);			
+		}
 	}
 	
 	/**
