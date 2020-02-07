@@ -9,6 +9,20 @@
 </head>
 <body>
 
+<h1>${user}</h1>
+
+<form action="/login">
+	UserID: <input type="number" name="userId" min=1 required>
+	<input class="btn btn-primary" type="submit" value="login">
+</form>
+
+<p></p>
+
+<a class="btn btn-primary" href="/login-guest">Login as a guest</a>
+
+<p></p>
+
+<a class="btn btn-primary" href="/new-user">New user? Click here to register!</a>
 
 </body>
 </html>

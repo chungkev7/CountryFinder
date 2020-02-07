@@ -7,6 +7,8 @@ package co.kc.CountryFinder.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,12 +22,17 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import co.kc.CountryFinder.model.Country;
+import co.kc.CountryFinder.model.User;
+import co.kc.CountryFinder.repo.UserRepo;
 
 @Controller
 public class CountryController {
 
 	@Value("${country.key}")
 	private String countryKey;
+	
+	@Autowired
+	UserRepo uRepo;
 	
 	RestTemplate rt = new RestTemplate();
 	
@@ -35,6 +42,7 @@ public class CountryController {
 	static int nameClickCounter = 0;
 	static int capitalClickCounter = 0;
 	static int populationClickCounter = 0;
+	static User currentUser;
 	
 	/**
 	 * Returns a list of countries based on user input request
@@ -400,11 +408,48 @@ public class CountryController {
 		return mv;
 	}
 	
+	// Searches database for userId, sets currentUser to that userId if present
+	// Otherwise sends user back to index page with user does not exist message
+	@RequestMapping("/login")
+	public ModelAndView login(@RequestParam("userId") int userId) {
+		ModelAndView mv = new ModelAndView();
+		
+		currentUser = uRepo.findById(userId).orElse(null);
+		
+		if(currentUser == null) {
+			mv.setViewName("index");
+			mv.addObject("user", "The userID does not exist. Please register or login as a guest.");
+			return mv;
+		} else {
+			mv.setViewName("start-page");
+			return mv;
+		}		
+	}
+	
+	// Logins user as a guest, does not set currentUser to a user in the database
+	@RequestMapping("/login-guest")
+	public ModelAndView loginAsGuest() {
+		ModelAndView mv = new ModelAndView("start-page");
+		
+		return mv;
+	}
+	
+	// Creates a new user and userID
+	@RequestMapping("new-user")
+	public ModelAndView newUser() {
+		ModelAndView mv = new ModelAndView("start-page");
+		
+		currentUser = new User();
+		uRepo.save(currentUser);
+		
+		return mv;
+	}
+	
 	/**
 	 * Clears the country list and random countries list if user goes back to the start page
 	 */
 	@RequestMapping("/start-page")
-	public ModelAndView startPage() {
+	public ModelAndView backToStartPage() {
 		ModelAndView mv = new ModelAndView("start-page");
 		
 		countryList.clear();

@@ -80,6 +80,7 @@
 	<br>
 	<h1><a class="btn btn-secondary" onclick="confirmCapChoice()">Guess capital, search by all countries</a></h1>
 
+<br>
 <a class="btn btn-primary" href="/log-out">Log out</a>
 
 <script>
