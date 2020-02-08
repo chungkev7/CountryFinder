@@ -48,6 +48,9 @@ public class CountryController {
 	static int capitalClickCounter = 0;
 	static int populationClickCounter = 0;
 	static User currentUser = new User();
+	static int currentLoginWins = 0;
+	static int currentLoginLosses = 0;
+	static int currentLoginGamesPlayed = 0;
 	
 	/**
 	 * Returns a list of countries based on user input request
@@ -443,6 +446,9 @@ public class CountryController {
 			return mv;
 		} else {
 			mv.setViewName("start-page");
+			
+			addUserSession(currentUser, session);
+			
 			return mv;
 		}		
 	}
@@ -451,6 +457,8 @@ public class CountryController {
 	@RequestMapping("/login-guest")
 	public ModelAndView loginAsGuest() {
 		ModelAndView mv = new ModelAndView("start-page");
+		
+		addUserSession(currentUser, session);
 		
 		return mv;
 	}
@@ -464,6 +472,8 @@ public class CountryController {
 		uRepo.save(currentUser);
 		
 		session.setAttribute("numOfUsers", uRepo.findMaxId());
+		
+		addUserSession(currentUser, session);
 		
 		return mv;
 	}
@@ -493,23 +503,34 @@ public class CountryController {
 		
 		currentUser = new User();
 		
+		session.removeAttribute("currentUser");
+		
 		return mv;
+	}
+	
+	// Adds a user object to the session to be accessible in the jsp pages
+	public static void addUserSession(User currentUser, HttpSession session) {
+		session.setAttribute("currentUser", currentUser);
 	}
 	
 	// Adds +1 win, games played for each correct guess
 	public static void correctGuess(User user) {
+		currentLoginWins++;
+		currentLoginGamesPlayed++;
 		user.setWins(user.getWins() + 1);
 		user.setGamesPlayed(user.getGamesPlayed() + 1);
 	}
 	
 	// Adds +1 loss, games played for each incorrect guess
 	public static void incorrectGuess(User user) {
+		currentLoginLosses++;
+		currentLoginGamesPlayed++;
 		user.setLosses(user.getLosses() + 1);
 		user.setGamesPlayed(user.getGamesPlayed() + 1);
 	}
 	
 	// Saves user's wins, losses, and games played to database
-	// if user did not login as a guest (currentUser's Id is 0)
+	// if user did not login as a guest (guest user's ID is 0)
 	public void saveUser(User user) {
 		if(user.getUserId() > 0) {
 			uRepo.save(user);	

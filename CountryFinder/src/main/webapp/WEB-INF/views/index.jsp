@@ -9,6 +9,8 @@
 </head>
 <body>
 
+<div class="jumbotron">
+
 <h1>${user}</h1>
 
 <form action="/login">
@@ -23,6 +25,8 @@
 <p></p>
 
 <a class="btn btn-primary" onclick="newUserId()" href="/new-user">New user? Click here to register!</a>
+
+</div>
 
 <script>
 

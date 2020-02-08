@@ -9,6 +9,8 @@
 </head>
 <body>
 
+<div class="jumbotron">
+
 	<h1>Search by country name</h1>
 	<form action="/search-results">
 		Country name: <input type="text" name="name" required> 
@@ -81,7 +83,9 @@
 	<h1><a class="btn btn-secondary" onclick="confirmCapChoice()">Guess capital, search by all countries</a></h1>
 
 <br>
-<a class="btn btn-primary" href="/log-out">Log out</a>
+<a class="btn btn-primary" onclick="logOutShowStats()" href="/log-out">Log out</a>
+
+</div>
 
 <script>
 
@@ -139,6 +143,12 @@ function confirmCapChoice() {
 	  if (c == true) {
 		  window.location = "/all-country-capital";
 	  }
+}
+
+// Created function in a different syntax than the other functions
+// Displays user stats when user logs out
+const logOutShowStats = () => {
+	alert("Thanks for playing!\n\nTotal wins: ${currentUser.wins}\nTotal losses: ${currentUser.losses}\nTotal games played: ${currentUser.gamesPlayed}");
 }
 
 </script>

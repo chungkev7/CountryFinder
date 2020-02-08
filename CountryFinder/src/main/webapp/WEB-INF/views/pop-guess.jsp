@@ -20,7 +20,16 @@
 
 <a class="btn btn-primary" href="/start-page">Back to start page</a>
 
-<a class="btn btn-primary" href="/log-out">Log out</a>
-	
+<a class="btn btn-primary" onclick="logOutShowStats()" href="/log-out">Log out</a>
+
+<script>
+
+//Displays user stats when user logs out
+const logOutShowStats = () => {
+	alert("Thanks for playing!\n\nTotal wins: ${currentUser.wins}\nTotal losses: ${currentUser.losses}\nTotal games played: ${currentUser.gamesPlayed}");
+}
+
+</script>
+
 </body>
 </html>
