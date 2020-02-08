@@ -4,7 +4,6 @@
 
 package co.kc.CountryFinder.controller;
 
-import java.lang.module.FindException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -140,6 +139,8 @@ public class CountryController {
 		} else {
 			mv.setViewName("pop-guess-mc");
 			
+			// Assignment of random countries 2-4 are in try-catch blocks
+			// if the randomly generated countryNum is on the outer edges of the countryList index
 			try {
 				randomCountry2 = countryList.get(countryNum + 1);
 			} catch (IndexOutOfBoundsException e) {
@@ -174,6 +175,8 @@ public class CountryController {
 	
 	/**
 	 * Generates a message to user if user guesses the population correctly or incorrectly
+	 * 
+	 * Saves user's guesses to database
 	 * 
 	 * @param population: compares the user's population guess to the random country
 	 * @return: message if user was correct or not
@@ -232,6 +235,8 @@ public class CountryController {
 		} else {
 			mv.setViewName("capital-guess-mc");
 			
+			// Assignment of random countries 2-4 are in try-catch blocks
+			// if the randomly generated countryNum is on the outer edges of the countryList index
 			try {
 				randomCountry2 = countryList.get(countryNum + 1);
 			} catch (IndexOutOfBoundsException e) {
@@ -266,6 +271,8 @@ public class CountryController {
 	
 	/**
 	 * Generates a message to user if user guesses the capital correctly or incorrectly
+	 * 
+	 * Saves user's guesses to database
 	 * 
 	 * @param capital: compares the user's capital guess to the random country
 	 * @return: message if user was correct or not
