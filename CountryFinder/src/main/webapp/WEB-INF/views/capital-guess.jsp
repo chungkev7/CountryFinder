@@ -16,11 +16,19 @@
 </form>
 <br>
 
-<a class="btn btn-primary" href="/start-page">Back to start page</a>
+<a class="btn btn-secondary" onclick="backToStartPage()">Back to start page</a>
 
 <a class="btn btn-primary" onclick="logOutShowStats()" href="/log-out">Log out</a>
 
 <script>
+
+const backToStartPage = () => {
+	  var c = confirm("Are you sure?\n\nThis current guess will not be added to your record");
+	  
+	  if (c == true) {
+		  window.location = "/start-page";
+	  }
+}
 
 var alertMessage = "Thanks for playing!\n\nCurrent session wins: ${currentWins}\nCurrent session losses: ${currentLosses}\nCurrent session games played: ${gamesPlayed}";
 

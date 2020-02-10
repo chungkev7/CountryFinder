@@ -497,6 +497,8 @@ public class CountryController {
 	
 	/**
 	 * Clears the country list and random countries list if user logs out and goes back to the initial login page
+	 * 
+	 * Resets the current session record
 	 */
 	@RequestMapping("/log-out")
 	public ModelAndView logOut() {
