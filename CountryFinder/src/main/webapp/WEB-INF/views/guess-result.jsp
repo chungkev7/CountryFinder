@@ -18,9 +18,15 @@
 
 <script>
 
+var alertMessage = "Thanks for playing!\n\nCurrent session wins: ${currentWins}\nCurrent session losses: ${currentLosses}\nCurrent session games played: ${gamesPlayed}";
+
 //Displays user stats when user logs out
 const logOutShowStats = () => {
-	alert("Thanks for playing!\n\nTotal wins: ${currentUser.wins}\nTotal losses: ${currentUser.losses}\nTotal games played: ${currentUser.gamesPlayed}");
+	if(${currentUser.userId} > 0){
+		alertMessage += "\n\nTotal wins: ${currentUser.wins}\nTotal losses: ${currentUser.losses}\nTotal games played: ${currentUser.gamesPlayed}";
+	}
+	
+	alert(alertMessage);
 }
 
 </script>

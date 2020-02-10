@@ -192,10 +192,12 @@ public class CountryController {
 			mv.addObject("result", "Sorry, your guess of " + String.format("%,d", population) + " is incorrect. The population of " + randomCountry.getName() + " is " + String.format("%,d", randomCountry.getPopulation()) + ". You are off by " + String.format("%,d", ((int)Math.abs(population - randomCountry.getPopulation()))) + " citizens.");
 			incorrectGuess(currentUser);
 			saveUser(currentUser);
+			addCurrentRecordToSession(session);
 		} else {
 			mv.addObject("result", "You are correct! The population of " + randomCountry.getName() + " is " + String.format("%,d", randomCountry.getPopulation()) + " citizens.");
 			correctGuess(currentUser);
 			saveUser(currentUser);
+			addCurrentRecordToSession(session);
 		}
 		
 		countryList.clear();
@@ -288,10 +290,12 @@ public class CountryController {
 			mv.addObject("result", "Sorry, your guess is incorrect. The capital of " + randomCountry.getName() + " is " + randomCountry.getCapital() + ".");
 			incorrectGuess(currentUser);
 			saveUser(currentUser);
+			addCurrentRecordToSession(session);
 		} else {
 			mv.addObject("result", "You are correct! The capital of " + randomCountry.getName() + " is " + randomCountry.getCapital() + ".");
 			correctGuess(currentUser);
 			saveUser(currentUser);
+			addCurrentRecordToSession(session);
 		}
 		
 		return mv;
@@ -504,6 +508,10 @@ public class CountryController {
 		currentUser = new User();
 		
 		session.removeAttribute("currentUser");
+
+		currentLoginWins = 0;
+		currentLoginLosses = 0;
+		currentLoginGamesPlayed = 0;
 		
 		return mv;
 	}
@@ -535,6 +543,13 @@ public class CountryController {
 		if(user.getUserId() > 0) {
 			uRepo.save(user);	
 		}
+	}
+	
+	// Adds the user's current record stats to session
+	public static void addCurrentRecordToSession(HttpSession session) {
+		session.setAttribute("currentWins", currentLoginWins);
+		session.setAttribute("currentLosses", currentLoginLosses);
+		session.setAttribute("gamesPlayed", currentLoginGamesPlayed);
 	}
 	
 	/**

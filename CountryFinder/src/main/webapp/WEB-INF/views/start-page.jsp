@@ -145,10 +145,28 @@ function confirmCapChoice() {
 	  }
 }
 
+// Displays user's play record if user is not a guest when the user logs in
+// This message will only display correctly (display only once) if the browser is not in private/incognito mode
+window.onload = function () {
+    if (localStorage.getItem("startPage") === null) {
+        if(${currentUser.userId} > 0) {
+        	alert("Welcome back!\nHere's your current record:\n\nTotal wins: ${currentUser.wins}\nTotal losses: ${currentUser.losses}\nTotal games played: ${currentUser.gamesPlayed}");
+        }
+        
+        localStorage.setItem("startPage", true);
+    }
+}
+
+var alertMessage = "Thanks for playing!\n\nCurrent session wins: ${currentWins}\nCurrent session losses: ${currentLosses}\nCurrent session games played: ${gamesPlayed}";
+
 // Created function in a different syntax than the other functions
 // Displays user stats when user logs out
 const logOutShowStats = () => {
-	alert("Thanks for playing!\n\nTotal wins: ${currentUser.wins}\nTotal losses: ${currentUser.losses}\nTotal games played: ${currentUser.gamesPlayed}");
+	if(${currentUser.userId} > 0){
+		alertMessage += "\n\nTotal wins: ${currentUser.wins}\nTotal losses: ${currentUser.losses}\nTotal games played: ${currentUser.gamesPlayed}";
+	}
+	
+	alert(alertMessage);
 }
 
 </script>
