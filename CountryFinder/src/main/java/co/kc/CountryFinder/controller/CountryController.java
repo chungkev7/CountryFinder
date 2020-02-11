@@ -167,6 +167,7 @@ public class CountryController {
 			randomCountries.add(randomCountry3);
 			randomCountries.add(randomCountry4);
 			
+			// Collections.shuffle() randomly moves the countries to different indexes
 			Collections.shuffle(randomCountries);
 			
 			mv.addObject("randomCountry", randomCountry);
@@ -265,6 +266,7 @@ public class CountryController {
 			randomCountries.add(randomCountry3);
 			randomCountries.add(randomCountry4);
 			
+			// Collections.shuffle() randomly moves the countries to different indexes
 			Collections.shuffle(randomCountries);
 			
 			mv.addObject("randomCountry", randomCountry);
