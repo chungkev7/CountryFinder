@@ -30,6 +30,7 @@
 
 <script>
 
+// Alerts user of their new ID
 function newUserId(){
 	alert("Your user ID is: " + ${numOfUsers + 1} + ". Please remember it.");
 }

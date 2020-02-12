@@ -30,6 +30,7 @@ import co.kc.CountryFinder.repo.UserRepo;
 @Controller
 public class CountryController {
 
+	// API request key
 	@Value("${country.key}")
 	private String countryKey;
 	
@@ -41,6 +42,7 @@ public class CountryController {
 	
 	RestTemplate rt = new RestTemplate();
 	
+	// Created various static variables to utilize throughout the controller
 	static ArrayList<Country> countryList = new ArrayList<>();
 	static ArrayList<Country> randomCountries = new ArrayList<>();
 	static Country randomCountry;
@@ -470,6 +472,7 @@ public class CountryController {
 	}
 	
 	// Creates a new user and userID
+	// Next userID is set to the max Id + 1
 	@RequestMapping("new-user")
 	public ModelAndView newUser() {
 		ModelAndView mv = new ModelAndView("start-page");

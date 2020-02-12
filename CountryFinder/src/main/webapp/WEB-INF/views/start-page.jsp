@@ -109,8 +109,8 @@ function isRegionChoiceEmptyPop() {
 	return true;
 }
 
-var regionChoiceCap;
-var selectedRegionCap;
+var regionChoicePop;
+var selectedRegionPop;
 
 function getRegionChoiceCap(){
 	regionChoiceCap = document.getElementById("regionCap").value;
@@ -129,6 +129,7 @@ function isRegionChoiceEmptyCap() {
 	return true;
 }
 
+// Adds confirmation window. If yes, goes to request mapping
 function confirmPopChoice() {
 	  var r = confirm("Are you sure?");
 	  
@@ -136,7 +137,8 @@ function confirmPopChoice() {
 		  window.location = "/all-country-population";
 	  }
 }
-	
+
+//Adds confirmation window. If yes, goes to request mapping
 function confirmCapChoice() {
 	  var c = confirm("Are you sure?");
 	  

@@ -14,7 +14,7 @@
 
 	<form action="/capital-guess">
 		<select name="capital" required>
-			<option value="">Population:</option>
+			<option value="">Capital:</option>
 			<option value="${randomCountries.get(0).capital}">${randomCountries.get(0).capital}</option>
 			<option value="${randomCountries.get(1).capital}">${randomCountries.get(1).capital}</option>
 			<option value="${randomCountries.get(2).capital}">${randomCountries.get(2).capital}</option>
