@@ -49,6 +49,7 @@ public class CountryController {
 	static int nameClickCounter = 0;
 	static int capitalClickCounter = 0;
 	static int populationClickCounter = 0;
+	static int regionClickCounter = 0;
 	static User currentUser = new User();
 	static int currentLoginWins = 0;
 	static int currentLoginLosses = 0;
@@ -101,6 +102,30 @@ public class CountryController {
 		HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 		
 		ResponseEntity<Country[]> response = rt.exchange("https://restcountries-v1.p.rapidapi.com/region/" + region, HttpMethod.GET, entity, Country[].class);
+		
+		addtoCountryList(response);
+		
+		mv.addObject("results", countryList);
+		
+		return mv;
+	}
+	
+	/**
+	 * Returns a list of all of the countries
+	 * 
+	 * @return: a list of countries
+	 */
+	@RequestMapping("/search-all")
+	public ModelAndView searchAllCountries() {
+		ModelAndView mv = new ModelAndView("search-results");
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-RapidAPI-Key", countryKey);
+		headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+		HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+		
+		ResponseEntity<Country[]> response = rt.exchange("https://ajayakv-rest-countries-v1.p.rapidapi.com/rest/v1/all", HttpMethod.GET, entity, Country[].class);
 		
 		addtoCountryList(response);
 		
@@ -433,6 +458,32 @@ public class CountryController {
 			Comparator<Country> sortByPopulationAsc = (Country c1, Country c2) -> Integer.compare(c1.getPopulation(), c2.getPopulation());
 			
 			Collections.sort(countryList, sortByPopulationAsc);
+		}
+		
+		mv.addObject("results", countryList);
+		
+		return mv;
+	}
+	
+	/**
+	 * Sorts the country list search results by region
+	 * 
+	 * @return: sorted country list based on region
+	 */
+	@RequestMapping("/sort-by-region")
+	public ModelAndView sortByRegion() {
+		ModelAndView mv = new ModelAndView("/search-results");
+		
+		regionClickCounter++;
+		
+		if (regionClickCounter % 2 != 0) {
+			Comparator<Country> sortByRegionDesc = (Country c1, Country c2) -> c1.getRegion().compareTo(c2.getRegion());
+			
+			Collections.sort(countryList, sortByRegionDesc);
+		} else {
+			Comparator<Country> sortByRegionAsc = (Country c1, Country c2) -> c2.getRegion().compareTo(c1.getRegion());
+			
+			Collections.sort(countryList, sortByRegionAsc);
 		}
 		
 		mv.addObject("results", countryList);

@@ -30,6 +30,11 @@
 		<input class="btn btn-primary" type="submit" value="Submit">
 	</form>
 	
+	<p></p>
+	<h1>Search all countries</h1>
+	<a class="btn btn-primary" href="/search-all">Click here to search all countries</a>
+	<p></p>
+	
 	<!-- The selected region value is passed to the hidden value to form action/random-country-population -->
 	<h1>Guess population: Search by region</h1>
 	<form>

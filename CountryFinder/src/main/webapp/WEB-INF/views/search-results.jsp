@@ -16,7 +16,7 @@ ${none}
   <tr>
     <th><a title="Sort by name" href="/sort-by-name">Name</a></th>
     <th><a title="Sort by capital" href="/sort-by-capital">Capital</a></th>
-    <th>Region</th>
+    <th><a title="Sory by region" href="/sort-by-region">Region</a></th>
     <th><a title="Sort by population" href="/sort-by-population">Population</a></th>
   </tr>
 		<c:forEach var="c" items="${results}">
