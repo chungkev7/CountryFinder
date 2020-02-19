@@ -24,6 +24,7 @@
 
 <script>
 
+// Confirms if user returns to start page
 const backToStartPage = () => {
 	  var c = confirm("Are you sure?\n\nThis current guess will not be added to your record");
 	  
@@ -34,7 +35,8 @@ const backToStartPage = () => {
 
 var alertMessage = "Thanks for playing!\n\nCurrent session wins: ${currentWins}\nCurrent session losses: ${currentLosses}\nCurrent session games played: ${gamesPlayed}";
 
-//Displays user stats when user logs out
+// Displays user stats when user logs out
+// Additional stats are shown if user did not login as a guest
 const logOutShowStats = () => {
 	if(${currentUser.userId} > 0){
 		alertMessage += "\n\nTotal wins: ${currentUser.wins}\nTotal losses: ${currentUser.losses}\nTotal games played: ${currentUser.gamesPlayed}";

@@ -166,8 +166,8 @@ window.onload = function () {
 
 var alertMessage = "Thanks for playing!\n\nCurrent session wins: ${currentWins}\nCurrent session losses: ${currentLosses}\nCurrent session games played: ${gamesPlayed}";
 
-// Created function in a different syntax than the other functions
 // Displays user stats when user logs out
+// Additional stats are shown if user did not login as a guest
 const logOutShowStats = () => {
 	if(${currentUser.userId} > 0){
 		alertMessage += "\n\nTotal wins: ${currentUser.wins}\nTotal losses: ${currentUser.losses}\nTotal games played: ${currentUser.gamesPlayed}";
