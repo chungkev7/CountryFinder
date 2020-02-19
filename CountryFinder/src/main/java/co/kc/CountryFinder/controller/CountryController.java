@@ -50,6 +50,7 @@ public class CountryController {
 	static int capitalClickCounter = 0;
 	static int populationClickCounter = 0;
 	static int regionClickCounter = 0;
+	static int areaClickCounter = 0;
 	static User currentUser = new User();
 	static int currentLoginWins = 0;
 	static int currentLoginLosses = 0;
@@ -484,6 +485,32 @@ public class CountryController {
 			Comparator<Country> sortByRegionAsc = (Country c1, Country c2) -> c2.getRegion().compareTo(c1.getRegion());
 			
 			Collections.sort(countryList, sortByRegionAsc);
+		}
+		
+		mv.addObject("results", countryList);
+		
+		return mv;
+	}
+	
+	/**
+	 * Sorts the country list search results by area
+	 * 
+	 * @return: sorted country list based on area
+	 */
+	@RequestMapping("/sort-by-area")
+	public ModelAndView sortByArea() {
+		ModelAndView mv = new ModelAndView("search-results");
+		
+		areaClickCounter++;
+		
+		if (areaClickCounter % 2 != 0) {
+			Comparator<Country> sortByAreaDesc = (Country c1, Country c2) -> Integer.compare(c1.getArea(), c2.getArea());
+			
+			Collections.sort(countryList, sortByAreaDesc);
+		} else {
+			Comparator<Country> sortByAreaAsc = (Country c1, Country c2) -> Integer.compare(c2.getArea(), c1.getArea());
+			
+			Collections.sort(countryList, sortByAreaAsc);
 		}
 		
 		mv.addObject("results", countryList);

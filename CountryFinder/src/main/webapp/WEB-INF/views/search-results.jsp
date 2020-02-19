@@ -18,13 +18,24 @@ ${none}
     <th><a title="Sort by capital" href="/sort-by-capital">Capital</a></th>
     <th><a title="Sory by region" href="/sort-by-region">Region</a></th>
     <th><a title="Sort by population" href="/sort-by-population">Population</a></th>
+    <th><a title="Sory by area" href="/sort-by-area">Country Area (mi^2)</a></th>
   </tr>
 		<c:forEach var="c" items="${results}">
 			<tr>
 				<td><a target="_blank" title="Link to the wiki page for the country" href="https://en.wikipedia.org/wiki/${c.name}">${c.name}</a></td>
-				<td><a target="_blank" title="Link to the wiki page for the capital" href="https://en.wikipedia.org/wiki/${c.capital}">${c.capital}</a></td>
+				<td>
+					<c:choose>
+						<c:when test="${empty c.capital}">
+							Not provided
+						</c:when>
+						<c:otherwise>
+							<a target="_blank" title="Link to the wiki page for the capital" href="https://en.wikipedia.org/wiki/${c.capital}">${c.capital}</a>
+						</c:otherwise>
+					</c:choose>
+				</td>
 				<td>${c.region}</td>
 				<td>${c.population}</td>
+				<td>${c.area}</td>
 			</tr>
 		</c:forEach>
 	</table>
