@@ -575,13 +575,19 @@ public class CountryController {
 		countryList.clear();
 		randomCountries.clear();
 		
+		nameClickCounter = 0;
+		capitalClickCounter = 0;
+		populationClickCounter = 0;
+		regionClickCounter = 0;
+		areaClickCounter = 0;
+		
 		return mv;
 	}
 	
 	/**
 	 * Clears the country list and random countries list if user logs out and goes back to the initial login page
 	 * 
-	 * Resets the current session record
+	 * Resets the current session record and click counters
 	 */
 	@RequestMapping("/log-out")
 	public ModelAndView logOut() {
@@ -597,6 +603,11 @@ public class CountryController {
 		currentLoginWins = 0;
 		currentLoginLosses = 0;
 		currentLoginGamesPlayed = 0;
+		nameClickCounter = 0;
+		capitalClickCounter = 0;
+		populationClickCounter = 0;
+		regionClickCounter = 0;
+		areaClickCounter = 0;
 		
 		return mv;
 	}

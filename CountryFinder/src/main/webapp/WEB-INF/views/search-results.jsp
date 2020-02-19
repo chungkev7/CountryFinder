@@ -18,7 +18,7 @@ ${none}
     <th><a title="Sort by capital" href="/sort-by-capital">Capital</a></th>
     <th><a title="Sory by region" href="/sort-by-region">Region</a></th>
     <th><a title="Sort by population" href="/sort-by-population">Population</a></th>
-    <th><a title="Sory by area" href="/sort-by-area">Country Area (mi^2)</a></th>
+    <th><a title="Sory by area" href="/sort-by-area">Area (mi^2)</a></th>
   </tr>
 		<c:forEach var="c" items="${results}">
 			<tr>
@@ -33,9 +33,36 @@ ${none}
 						</c:otherwise>
 					</c:choose>
 				</td>
-				<td>${c.region}</td>
-				<td>${c.population}</td>
-				<td>${c.area}</td>
+				<td>
+					<c:choose>
+						<c:when test="${empty c.region}">
+							Not provided
+						</c:when>
+						<c:otherwise>
+							${c.region}
+						</c:otherwise>
+					</c:choose>
+				</td>
+				<td>
+					<c:choose>
+						<c:when test="${c.population == 0}">
+							Not provided
+						</c:when>
+						<c:otherwise>
+							${c.population}
+						</c:otherwise>
+					</c:choose>
+				</td>
+				<td>
+					<c:choose>
+						<c:when test="${c.area == 0}">
+							Not provided
+						</c:when>
+						<c:otherwise>
+							${c.area}
+						</c:otherwise>
+					</c:choose>
+				</td>
 			</tr>
 		</c:forEach>
 	</table>
