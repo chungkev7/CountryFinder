@@ -82,10 +82,10 @@
 	</form>
 	
 	<br>
-	<h1><a class="btn btn-secondary" onclick="confirmPopChoice()">Guess population, search by all countries</a></h1>
+	<h1><a class="btn btn-secondary" onclick="confirmPopChoice()">Guess population (single choice), search by all countries</a></h1>
 	
 	<br>
-	<h1><a class="btn btn-secondary" onclick="confirmCapChoice()">Guess capital, search by all countries</a></h1>
+	<h1><a class="btn btn-secondary" onclick="confirmCapChoice()">Guess capital (single choice), search by all countries</a></h1>
 
 <br>
 <a class="btn btn-primary" onclick="logOutShowStats()" href="/log-out">Log out</a>

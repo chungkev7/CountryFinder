@@ -46,6 +46,15 @@ public class CountryController {
 	static ArrayList<Country> countryList = new ArrayList<>();
 	static ArrayList<Country> randomCountries = new ArrayList<>();
 	static Country randomCountry;
+	// Index page is the initial login page
+	static ModelAndView indexPage = new ModelAndView("index");
+	static ModelAndView startPage = new ModelAndView("start-page");
+	static ModelAndView searchResults = new ModelAndView("search-results");
+	static ModelAndView popGuess = new ModelAndView("pop-guess");
+	static ModelAndView popGuessMc = new ModelAndView("pop-guess-mc");
+	static ModelAndView capGuess = new ModelAndView("capital-guess");
+	static ModelAndView capGuessMc = new ModelAndView("capital-guess-mc");
+	static ModelAndView guessResult = new ModelAndView("guess-result");
 	static int nameClickCounter = 0;
 	static int capitalClickCounter = 0;
 	static int populationClickCounter = 0;
@@ -64,7 +73,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/search-results")
 	public ModelAndView homePage(@RequestParam("name") String name) {
-		ModelAndView mv = new ModelAndView("search-results");
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("X-RapidAPI-Key", countryKey);
@@ -77,13 +85,13 @@ public class CountryController {
 			
 			addtoCountryList(response);
 			
-			mv.addObject("results", countryList);
+			searchResults.addObject("results", countryList);
 
 		} catch (RestClientException e) {
-			mv.addObject("none", "No search results found.");
+			searchResults.addObject("none", "No search results found.");
 		}
 		
-		return mv;
+		return searchResults;
 	}
 	
 	/**
@@ -94,7 +102,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/region-search")
 	public ModelAndView searchByRegion(@RequestParam("region") String region) {
-		ModelAndView mv = new ModelAndView("search-results");
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("X-RapidAPI-Key", countryKey);
@@ -106,9 +113,9 @@ public class CountryController {
 		
 		addtoCountryList(response);
 		
-		mv.addObject("results", countryList);
+		searchResults.addObject("results", countryList);
 		
-		return mv;
+		return searchResults;
 	}
 	
 	/**
@@ -118,7 +125,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/search-all")
 	public ModelAndView searchAllCountries() {
-		ModelAndView mv = new ModelAndView("search-results");
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("X-RapidAPI-Key", countryKey);
@@ -130,9 +136,9 @@ public class CountryController {
 		
 		addtoCountryList(response);
 		
-		mv.addObject("results", countryList);
+		searchResults.addObject("results", countryList);
 		
-		return mv;
+		return searchResults;
 	}
 	
 	/**
@@ -144,8 +150,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/random-country-population")
 	public ModelAndView getRandomCountryByRegion(@RequestParam("region") String region, @RequestParam("choice") String choice) {
-		// Initialize view, then set view if choice was single input/multiple choice
-		ModelAndView mv = new ModelAndView();
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("X-RapidAPI-Key", countryKey);
@@ -165,10 +169,10 @@ public class CountryController {
 		Country randomCountry4 = new Country();
 		
 		if (choice.equals("Single input")) {
-			mv.setViewName("pop-guess");
-			mv.addObject("randomCountry", randomCountry);
+			popGuess.addObject("randomCountry", randomCountry);
+			
+			return popGuess;
 		} else {
-			mv.setViewName("pop-guess-mc");
 			
 			// Assignment of random countries 2-4 are in try-catch blocks
 			// if the randomly generated countryNum is on the outer edges of the countryList index
@@ -198,11 +202,12 @@ public class CountryController {
 			// Collections.shuffle() randomly moves the countries to different indexes
 			Collections.shuffle(randomCountries);
 			
-			mv.addObject("randomCountry", randomCountry);
-			mv.addObject("randomCountries", randomCountries);
+			popGuessMc.addObject("randomCountry", randomCountry);
+			popGuessMc.addObject("randomCountries", randomCountries);
+			
+			return popGuessMc;
 		}
-		
-		return mv;
+
 	}
 	
 	/**
@@ -215,15 +220,14 @@ public class CountryController {
 	 */
 	@RequestMapping("/pop-guess")
 	public ModelAndView populationGuess(@RequestParam("population") int population) {
-		ModelAndView mv = new ModelAndView("guess-result");
 		
 		if (population != randomCountry.getPopulation()) {
-			mv.addObject("result", "Sorry, your guess of " + String.format("%,d", population) + " is incorrect. The population of " + randomCountry.getName() + " is " + String.format("%,d", randomCountry.getPopulation()) + ". You are off by " + String.format("%,d", ((int)Math.abs(population - randomCountry.getPopulation()))) + " citizens.");
+			guessResult.addObject("result", "Sorry, your guess of " + String.format("%,d", population) + " is incorrect. The population of " + randomCountry.getName() + " is " + String.format("%,d", randomCountry.getPopulation()) + ". You are off by " + String.format("%,d", ((int)Math.abs(population - randomCountry.getPopulation()))) + " citizens.");
 			incorrectGuess(currentUser);
 			saveUser(currentUser);
 			addCurrentRecordToSession(session);
 		} else {
-			mv.addObject("result", "You are correct! The population of " + randomCountry.getName() + " is " + String.format("%,d", randomCountry.getPopulation()) + " citizens.");
+			guessResult.addObject("result", "You are correct! The population of " + randomCountry.getName() + " is " + String.format("%,d", randomCountry.getPopulation()) + " citizens.");
 			correctGuess(currentUser);
 			saveUser(currentUser);
 			addCurrentRecordToSession(session);
@@ -231,7 +235,7 @@ public class CountryController {
 		
 		countryList.clear();
 		
-		return mv;
+		return guessResult;
 	}
 	
 	/**
@@ -243,8 +247,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/random-country-capital")
 	public ModelAndView getRandomCountryByCapital(@RequestParam("region") String region, @RequestParam("choice") String choice) {
-		// Initialize view, then set view if choice was single input/multiple choice
-		ModelAndView mv = new ModelAndView();
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("X-RapidAPI-Key", countryKey);
@@ -264,10 +266,11 @@ public class CountryController {
 		Country randomCountry4 = new Country();
 		
 		if (choice.equals("Single input")) {
-			mv.setViewName("capital-guess");
-			mv.addObject("randomCountry", randomCountry);
+			
+			capGuess.addObject("randomCountry", randomCountry);
+			
+			return capGuess;
 		} else {
-			mv.setViewName("capital-guess-mc");
 			
 			// Assignment of random countries 2-4 are in try-catch blocks
 			// if the randomly generated countryNum is on the outer edges of the countryList index
@@ -297,11 +300,12 @@ public class CountryController {
 			// Collections.shuffle() randomly moves the countries to different indexes
 			Collections.shuffle(randomCountries);
 			
-			mv.addObject("randomCountry", randomCountry);
-			mv.addObject("randomCountries", randomCountries);
+			capGuessMc.addObject("randomCountry", randomCountry);
+			capGuessMc.addObject("randomCountries", randomCountries);
+			
+			return capGuessMc;
 		}
 		
-		return mv;
 	}
 	
 	/**
@@ -314,21 +318,20 @@ public class CountryController {
 	 */
 	@RequestMapping("/capital-guess")
 	public ModelAndView capitalGuess(@RequestParam("capital") String capital) {
-		ModelAndView mv = new ModelAndView("guess-result");
 		
 		if(!capital.equalsIgnoreCase(randomCountry.getCapital())) {
-			mv.addObject("result", "Sorry, your guess is incorrect. The capital of " + randomCountry.getName() + " is " + randomCountry.getCapital() + ".");
+			guessResult.addObject("result", "Sorry, your guess is incorrect. The capital of " + randomCountry.getName() + " is " + randomCountry.getCapital() + ".");
 			incorrectGuess(currentUser);
 			saveUser(currentUser);
 			addCurrentRecordToSession(session);
 		} else {
-			mv.addObject("result", "You are correct! The capital of " + randomCountry.getName() + " is " + randomCountry.getCapital() + ".");
+			guessResult.addObject("result", "You are correct! The capital of " + randomCountry.getName() + " is " + randomCountry.getCapital() + ".");
 			correctGuess(currentUser);
 			saveUser(currentUser);
 			addCurrentRecordToSession(session);
 		}
 		
-		return mv;
+		return guessResult;
 	}
 	
 	/**
@@ -339,7 +342,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/all-country-population")
 	public ModelAndView getRandomCountryByAllPopulation() {
-		ModelAndView mv = new ModelAndView("pop-guess");
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("X-RapidAPI-Key", countryKey);
@@ -354,9 +356,9 @@ public class CountryController {
 		int countryNum = (int) (Math.random() * countryList.size());
 		randomCountry = countryList.get(countryNum);
 		
-		mv.addObject("randomCountry", randomCountry);
+		popGuess.addObject("randomCountry", randomCountry);
 
-		return mv;
+		return popGuess;
 	}
 	
 	/**
@@ -367,7 +369,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/all-country-capital")
 	public ModelAndView getRandomCountryByAllCapital() {
-		ModelAndView mv = new ModelAndView("capital-guess");
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("X-RapidAPI-Key", countryKey);
@@ -382,9 +383,9 @@ public class CountryController {
 		int countryNum = (int) (Math.random() * countryList.size());
 		randomCountry = countryList.get(countryNum);
 		
-		mv.addObject("randomCountry", randomCountry);
+		capGuess.addObject("randomCountry", randomCountry);
 
-		return mv;
+		return capGuess;
 	}
 	
 	/**
@@ -394,7 +395,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/sort-by-name")
 	public ModelAndView sortByName() {
-		ModelAndView mv = new ModelAndView("search-results");
 		
 		nameClickCounter++;
 		
@@ -408,9 +408,9 @@ public class CountryController {
 			Collections.sort(countryList, sortByNameAsc);
 		}
 		
-		mv.addObject("results", countryList);
+		searchResults.addObject("results", countryList);
 		
-		return mv; 
+		return searchResults; 
 	}
 	
 	/**
@@ -420,7 +420,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/sort-by-capital")
 	public ModelAndView sortByCapital() {
-		ModelAndView mv = new ModelAndView("search-results");
 		
 		capitalClickCounter++;
 		
@@ -434,9 +433,9 @@ public class CountryController {
 			Collections.sort(countryList, sortByCapitalDesc);
 		}
 		
-		mv.addObject("results", countryList);
+		searchResults.addObject("results", countryList);
 				
-		return mv;
+		return searchResults;
 	}
 	
 	/**
@@ -446,7 +445,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/sort-by-population")
 	public ModelAndView sortByPopulation() {
-		ModelAndView mv = new ModelAndView("search-results");
 		
 		populationClickCounter++;
 		
@@ -461,9 +459,9 @@ public class CountryController {
 			Collections.sort(countryList, sortByPopulationAsc);
 		}
 		
-		mv.addObject("results", countryList);
+		searchResults.addObject("results", countryList);
 		
-		return mv;
+		return searchResults;
 	}
 	
 	/**
@@ -473,7 +471,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/sort-by-region")
 	public ModelAndView sortByRegion() {
-		ModelAndView mv = new ModelAndView("/search-results");
 		
 		regionClickCounter++;
 		
@@ -487,9 +484,9 @@ public class CountryController {
 			Collections.sort(countryList, sortByRegionAsc);
 		}
 		
-		mv.addObject("results", countryList);
+		searchResults.addObject("results", countryList);
 		
-		return mv;
+		return searchResults;
 	}
 	
 	/**
@@ -499,7 +496,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/sort-by-area")
 	public ModelAndView sortByArea() {
-		ModelAndView mv = new ModelAndView("search-results");
 		
 		areaClickCounter++;
 		
@@ -513,47 +509,61 @@ public class CountryController {
 			Collections.sort(countryList, sortByAreaAsc);
 		}
 		
-		mv.addObject("results", countryList);
+		searchResults.addObject("results", countryList);
 		
-		return mv;
+		return searchResults;
+	}
+	
+	
+	@RequestMapping("/")
+	public ModelAndView initialPage() {
+		
+		session.setAttribute("numOfUsers", uRepo.findMaxId());
+		
+		return indexPage;
 	}
 	
 	// Searches database for userId, sets currentUser to that userId if present
 	// Otherwise sends user back to index page with user does not exist message
 	@RequestMapping("/login")
 	public ModelAndView login(@RequestParam("userId") int userId) {
-		ModelAndView mv = new ModelAndView();
-		
+
 		currentUser = uRepo.findById(userId).orElse(null);
 		
 		if(currentUser == null) {
-			mv.setViewName("index");
-			mv.addObject("user", "The userID does not exist. Please register or login as a guest.");
-			return mv;
+			
+			indexPage.addObject("user", "The userID does not exist. Please register or login as a guest.");
+			
+			return indexPage;
 		} else {
-			mv.setViewName("start-page");
 			
 			addUserSession(currentUser, session);
 			
-			return mv;
+			// Clear and reset the contents of the index page to remove the error message
+			indexPage.clear();
+			indexPage.setViewName("index");
+			
+			return startPage;
 		}		
 	}
 	
 	// Logins user as a guest, does not set currentUser to a user in the database
 	@RequestMapping("/login-guest")
 	public ModelAndView loginAsGuest() {
-		ModelAndView mv = new ModelAndView("start-page");
 		
 		addUserSession(currentUser, session);
 		
-		return mv;
+		// Clear and reset the contents of the index page to remove the error message
+		indexPage.clear();
+		indexPage.setViewName("index");
+		
+		return startPage;
 	}
 	
 	// Creates a new user and userID
 	// Next userID is set to the max Id + 1
 	@RequestMapping("new-user")
 	public ModelAndView newUser() {
-		ModelAndView mv = new ModelAndView("start-page");
 		
 		currentUser = new User();
 		uRepo.save(currentUser);
@@ -562,7 +572,7 @@ public class CountryController {
 		
 		addUserSession(currentUser, session);
 		
-		return mv;
+		return startPage;
 	}
 	
 	/**
@@ -570,7 +580,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/start-page")
 	public ModelAndView backToStartPage() {
-		ModelAndView mv = new ModelAndView("start-page");
 		
 		countryList.clear();
 		randomCountries.clear();
@@ -581,7 +590,7 @@ public class CountryController {
 		regionClickCounter = 0;
 		areaClickCounter = 0;
 		
-		return mv;
+		return startPage;
 	}
 	
 	/**
@@ -591,7 +600,6 @@ public class CountryController {
 	 */
 	@RequestMapping("/log-out")
 	public ModelAndView logOut() {
-		ModelAndView mv = new ModelAndView("index");
 		
 		countryList.clear();
 		randomCountries.clear();
@@ -609,7 +617,7 @@ public class CountryController {
 		regionClickCounter = 0;
 		areaClickCounter = 0;
 		
-		return mv;
+		return indexPage;
 	}
 	
 	// Adds a user object to the session to be accessible in the jsp pages
