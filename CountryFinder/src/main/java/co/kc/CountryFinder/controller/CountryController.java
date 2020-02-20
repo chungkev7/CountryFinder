@@ -514,7 +514,9 @@ public class CountryController {
 		return searchResults;
 	}
 	
-	
+	/**
+	 * Added request mapping for initial startup page to add the number of users in database to session
+	 */
 	@RequestMapping("/")
 	public ModelAndView initialPage() {
 		
