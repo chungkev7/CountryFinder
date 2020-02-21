@@ -20,7 +20,7 @@
 
 <a class="btn btn-secondary" onclick="backToStartPage()">Back to start page</a>
 
-<a class="btn btn-primary" onclick="logOutShowStats()" href="/log-out">Log out</a>
+<a class="btn btn-secondary" onclick="logOutShowStats()">Log out</a>
 
 <script>
 
@@ -38,13 +38,18 @@ var alertMessage = "Thanks for playing!\n\nCurrent session wins: ${currentWins}\
 // Displays user stats when user logs out
 // Additional stats are shown if user did not login as a guest
 const logOutShowStats = () => {
-	if(${currentUser.userId} > 0){
-		alertMessage += "\n\nTotal wins: ${currentUser.wins}\nTotal losses: ${currentUser.losses}\nTotal games played: ${currentUser.gamesPlayed}";
-	}
+	var c = confirm("Are you sure you want to log out?\n\nThis current guess will not be added to your record");
 	
-	alert(alertMessage);
-}
+	if (c == true){
+		if(${currentUser.userId} > 0){
+			alertMessage += "\n\nTotal wins: ${currentUser.wins}\nTotal losses: ${currentUser.losses}\nTotal games played: ${currentUser.gamesPlayed}";
+		}
 
+		alert(alertMessage);
+		
+		window.location = "/log-out";
+	}
+}
 
 </script>
 
