@@ -46,6 +46,9 @@ public class CountryController {
 	static ArrayList<Country> countryList = new ArrayList<>();
 	static ArrayList<Country> randomCountries = new ArrayList<>();
 	static Country randomCountry;
+	static Country randomCountry2;
+	static Country randomCountry3;
+	static Country randomCountry4;
 	// Index page is the initial login page
 	static ModelAndView indexPage = new ModelAndView("index");
 	static ModelAndView startPage = new ModelAndView("start-page");
@@ -164,10 +167,6 @@ public class CountryController {
 		int countryNum = (int) (Math.random() * countryList.size());
 		randomCountry = countryList.get(countryNum);
 		
-		Country randomCountry2 = new Country();
-		Country randomCountry3 = new Country();
-		Country randomCountry4 = new Country();
-		
 		if (choice.equals("Single input")) {
 			popGuess.addObject("randomCountry", randomCountry);
 			
@@ -260,10 +259,6 @@ public class CountryController {
 		
 		int countryNum = (int) (Math.random() * countryList.size());
 		randomCountry = countryList.get(countryNum);
-		
-		Country randomCountry2 = new Country();
-		Country randomCountry3 = new Country();
-		Country randomCountry4 = new Country();
 		
 		if (choice.equals("Single input")) {
 			
